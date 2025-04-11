@@ -1,30 +1,24 @@
 #include <Arduino.h>
-#include <WiFiMulti.h>
+#include <WiFi.h>
 #include "wifi_connection.h"
-
-WiFiMulti wifi;
-int n = 0;
 
 void setup()
 {
+  int n = 0;
   Serial.begin(921600);
   Serial.println("SETUP");
-
-  wifi.addAP(WIFI_SSID, WIFI_PASSWORD);
-
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.println("CONNECTING");
-  while(wifi.run() != WL_CONNECTED)
-  {
-    delay(100);
-    Serial.println(n++);
-  }
-  Serial.println("CONNECTED");
 }
 
 void loop()
 {
   delay(1000);
-  Serial.print(WiFi.status());
+  int status = WiFi.status();
+  if(status == WL_CONNECTED)
+    Serial.print("Connected");
+  else
+    Serial.print(status);
   Serial.print('\t');
   Serial.print(WiFi.localIP());
   Serial.println();
